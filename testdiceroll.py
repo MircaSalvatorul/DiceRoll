@@ -2,7 +2,8 @@ import unittest
 import random
 from dicerollapp import DiceRollApp
 import tkinter as tk
-
+import os
+from PIL import Image
 
 class TestDiceRollLogic(unittest.TestCase):
     def test_roll_dice_valid_range(self):
@@ -46,6 +47,22 @@ class TestDiceRollHistory(unittest.TestCase):
         self.app.roll_dice()  # Adaugă o nouă valoare
         self.assertEqual(len(self.app.roll_history), 3)
         self.assertTrue(all(isinstance(x, int) for x in self.app.roll_history))
+
+
+class TestDiceImages(unittest.TestCase):
+    def test_images_exist(self):
+        """Testează dacă fișierele de imagine există."""
+        for i in range(1, 7):
+            path = os.path.join("images", f"dice_{i}.png")
+            self.assertTrue(os.path.exists(path), f"Imaginea {path} nu există")
+
+    def test_images_are_valid(self):
+        """Testează dacă fișierele de imagine sunt valide."""
+        for i in range(1, 7):
+            path = os.path.join("images", f"dice_{i}.png")
+            with open(path, "rb") as img_file:
+                img = Image.open(img_file)
+                img.verify()  # Verifică dacă imaginea este validă
 
 
 if __name__ == "__main__":
